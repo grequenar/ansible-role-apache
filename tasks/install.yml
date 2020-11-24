@@ -1,0 +1,27 @@
+---
+#required tasks for installing apache 
+- name: install httpd and firewalld
+  yum:
+    name:
+    - httpd
+    - firewalld
+    state: present
+
+- name: start firewalld
+  service: 
+    name: firewalld 
+    state: started 
+    enabled: yes
+
+- name: insert firewalld rule for httpd
+  firewalld: 
+    port: "{{ http_port }}/tcp"
+    permanent: true 
+    state: enabled 
+    immediate: yes
+
+- name: start httpd
+  service: 
+    name: httpd 
+    state: started 
+    enabled: yes

@@ -1,0 +1,19 @@
+---
+# required tasks to set up apache virtual host
+- name: Create document root
+  file: 
+    path: "/var/www/{{ document_root }}" 
+    state: directory 
+    mode: 0755
+
+- name: Set up apache virtual host
+  template: 
+    src: templates/apache.conf.j2 
+    dest: "/etc/httpd/conf.d/{{ http_conf }}"
+  notify: Reload Apache
+
+- name: Copy index test page
+  template: 
+    src: templates/index.html.j2 
+    dest: "/var/www/{{ document_root }}/index.html"
+  notify: Reload Apache
